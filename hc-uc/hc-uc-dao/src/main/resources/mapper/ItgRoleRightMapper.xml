@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgRoleRightMapper">
+	<resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		<id column="role_right_id" property="roleRightId" jdbcType="INTEGER" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="module_no" property="moduleNo" jdbcType="INTEGER" />
+		<result column="right_value" property="rightValue" jdbcType="INTEGER" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap type="com.hc.scm.uc.dao.model.RoleRightModel"
+		id="roleRightModel" extends="BaseResultMap">
+		<result column="t2_module_no" property="t2_moduleNo" jdbcType="INTEGER" />
+		<result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
+		<result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+		<result column="app_no" property="appNo" jdbcType="INTEGER" />
+		<result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+		<result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+		<result column="t2_right_value" property="t2_rightValue"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		role_right_id, role_id, module_no, right_value, creator,
+		create_time
+	</sql>
+	<sql id="condition">
+		<if test="null!=params">
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+		</if>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_role_right
+		WHERE role_right_id =
+		#{roleRightId,jdbcType=INTEGER}
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM itg_role_right WHERE 1=1
+		<include refid="condition" />
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_role_right WHERE 1=1
+		<include refid="condition" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_role_right WHERE 1=1
+		<include refid="condition" />
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		DELETE FROM
+		itg_role_right
+		WHERE role_right_id = #{roleRightId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		DELETE
+		FROM itg_role_right
+		WHERE role_right_id =
+		#{roleRightId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		INSERT INTO itg_role_right
+		(role_id, module_no,
+		right_value, creator, create_time
+		)
+		VALUES
+		(#{roleId,jdbcType=INTEGER},
+		#{moduleNo,jdbcType=INTEGER},
+		#{rightValue,jdbcType=INTEGER},
+		#{creator,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		INSERT INTO itg_role_right
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!-- <if test="roleRightId != null"> role_right_id, </if> -->
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="moduleNo != null">
+				module_no,
+			</if>
+			<if test="rightValue != null">
+				right_value,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!-- <if test="roleRightId != null"> #{roleRightId,jdbcType=INTEGER}, 
+				</if> -->
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="moduleNo != null">
+				#{moduleNo,jdbcType=INTEGER},
+			</if>
+			<if test="rightValue != null">
+				#{rightValue,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		UPDATE itg_role_right
+		<set>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="moduleNo != null">
+				module_no = #{moduleNo,jdbcType=INTEGER},
+			</if>
+			<if test="rightValue != null">
+				right_value = #{rightValue,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE role_right_id = #{roleRightId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgRoleRight">
+		UPDATE
+		itg_role_right
+		SET role_id = #{roleId,jdbcType=INTEGER},
+		module_no =
+		#{moduleNo,jdbcType=INTEGER},
+		right_value =
+		#{rightValue,jdbcType=INTEGER},
+		creator = #{creator,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		WHERE role_right_id =
+		#{roleRightId,jdbcType=INTEGER}
+	</update>
+	
+	<sql id="condition2">
+		<if test="null!=params">
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+			<if test="null!=params.appNo and ''!=params.appNo">
+				and ml.app_no = #{params.appNo}
+			</if>
+			<if test="null!=params.moduleCode and ''!=params.moduleCode">
+				and ml.module_code like concat('%',#{params.moduleCode},'%')
+			</if>
+			<if test="null!=params.moduleName and ''!=params.moduleName">
+				and ml.module_name like concat('%',#{params.moduleName},'%')
+			</if>
+			<!-- <if test="null!=params.creator and ''!=params.creator">
+				and rr.creator like concat('%',#{params.creator},'%')
+			</if>
+			<if test="null!=params.createFromTime and ''!=params.createFromTime">
+				<![CDATA[
+      			and  DATE_FORMAT(rr.create_time, '%Y-%m-%d') >=  DATE_FORMAT(#{params.createFromTime}, '%Y-%m-%d')
+				]]>
+			</if>
+			<if test="null!=params.createToTime and ''!=params.createToTime">
+				<![CDATA[
+      			and  DATE_FORMAT(rr.create_time, '%Y-%m-%d') <=  DATE_FORMAT(#{params.createToTime}, '%Y-%m-%d')
+				]]>
+			</if> -->
+		</if>
+	</sql>
+	
+	<sql id="condition3">
+		<if test="null!=params">
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+			<if test="null!=params.appNo and ''!=params.appNo">
+				and app_no = #{params.appNo}
+			</if>
+			<if test="null!=params.moduleCode and ''!=params.moduleCode">
+				and module_code like concat('%',#{params.moduleCode},'%')
+			</if>
+			<if test="null!=params.moduleName and ''!=params.moduleName">
+				and module_name like concat('%',#{params.moduleName},'%')
+			</if>
+		</if>
+	</sql>
+
+	<select id="selectRoleRightModels" parameterType="map"
+		resultMap="roleRightModel">
+		select * 
+		from
+		(
+		select
+		rr.role_right_id role_right_id,
+		rr.role_id role_id,
+		rr.module_no
+		module_no,
+		rr.right_value right_value,
+		rr.creator creator,
+		rr.create_time create_time,
+		ml.module_no t2_module_no,
+		ml.module_code
+		module_code,
+		ml.module_name module_name,
+		ml.right_value t2_right_value,
+		ml.app_no app_no,
+		ml.project_code project_code,
+		ml.module_url module_url
+		from itg_module_list ml
+		inner join
+		itg_role_right rr
+		on rr.module_no = ml.module_no
+		where rr.role_id = #{params.roleId}
+		<include refid="condition2" />
+		
+		union
+		
+		select
+		null role_right_id,
+		null role_id,
+		null module_no,
+		null right_value,
+		null creator,
+		null create_time,
+		module_no t2_module_no,
+		module_code
+		module_code,
+		module_name module_name,
+		right_value t2_right_value,
+		app_no app_no,
+		project_code project_code,
+		module_url module_url
+		from itg_module_list
+		where
+		module_no not in
+		(select module_no from itg_role_right where role_id =#{params.roleId} )
+		<include refid="condition3" />
+		) tableA
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectNoRoleRightModels" parameterType="map"
+		resultMap="roleRightModel">
+		select
+		null role_right_id,
+		null role_id,
+		null module_no,
+		null right_value,
+		null creator,
+		null create_time,
+		module_no t2_module_no,
+		module_code
+		module_code,
+		module_name module_name,
+		right_value t2_right_value,
+		app_no app_no,
+		project_code project_code,
+		module_url module_url
+		from itg_module_list
+		where
+		module_no not in
+		(select module_no from itg_role_right where role_id =#{params.roleId} )
+		<include refid="condition3" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectHasRoleRightModels" parameterType="map"
+		resultMap="roleRightModel">
+		select
+		rr.role_right_id role_right_id,
+		rr.role_id role_id,
+		rr.module_no
+		module_no,
+		rr.right_value right_value,
+		rr.creator creator,
+		rr.create_time create_time,
+		ml.module_no t2_module_no,
+		ml.module_code
+		module_code,
+		ml.module_name module_name,
+		ml.right_value t2_right_value,
+		ml.app_no app_no,
+		ml.project_code project_code,
+		ml.module_url module_url
+		from itg_module_list ml
+		inner join
+		itg_role_right rr
+		on rr.module_no = ml.module_no
+		where rr.role_id = #{params.roleId}
+		<include refid="condition2" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+</mapper>

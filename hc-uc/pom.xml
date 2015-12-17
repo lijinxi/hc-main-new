@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 <modelVersion>4.0.0</modelVersion>
+		  <parent>
+		    <groupId>com.hc.scm</groupId>
+		    <artifactId>hc-main</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		  </parent>
+		  <groupId>com.hc.scm</groupId>
+		  <artifactId>hc-uc</artifactId>
+		  <version>0.0.1-SNAPSHOT</version>
+		  <packaging>pom</packaging>
+		  <name>huaichen::hc-main::hc-uc</name>
+  
+		   <properties>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+				<hc.common.version>0.0.1-SNAPSHOT</hc.common.version>
+				<hc-common-core.version>0.0.1-SNAPSHOT</hc-common-core.version>
+			</properties>
+		   <modules>
+		   	<module>hc-uc-dao</module>
+		   	<module>hc-uc-service</module>
+    <module>hc-uc-web</module>
+  </modules>
+</project>

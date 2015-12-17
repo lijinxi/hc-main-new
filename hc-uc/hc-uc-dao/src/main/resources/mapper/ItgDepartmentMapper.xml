@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgDepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    <id column="dept_no" property="deptNo" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
+    <result column="parent_dept_no" property="parentDeptNo" jdbcType="INTEGER" />
+    <result column="search_code" property="searchCode" jdbcType="VARCHAR" />
+    <result column="level_no" property="levelNo" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="manager_emp_id" property="managerEmpId" jdbcType="INTEGER" />
+    <result column="worksite_id" property="worksiteId" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.hc.scm.uc.dao.model.DepartmentTreeModel" id="DepartmentTreeModel">
+  	<id column="dept_no" property="deptNo" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="parent_dept_no" property="parentDeptNo" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap type="com.hc.scm.uc.dao.model.DepartmentModel" id="DepartmentModel">
+  	<id column="dept_no" property="deptNo" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="parent_dept_no" property="parentDeptNo" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    dept_no, dept_code, dept_name, enable_flag, parent_dept_no, search_code, level_no, 
+    company_id, manager_emp_id, worksite_id, order_no, creator, create_time, modifier, 
+    modify_time, remarks
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="null!=params.queryCondition and ''!=params.queryCondition" >
+        ${params.queryCondition}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM itg_department
+    WHERE dept_no = #{deptNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM itg_department WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM itg_department WHERE 1=1 
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      ORDER BY ${orderByField}
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM itg_department WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM itg_department
+    WHERE dept_no = #{deptNo,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    DELETE FROM itg_department
+    WHERE dept_no = #{deptNo,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    INSERT INTO itg_department (dept_no, dept_code, dept_name, 
+      enable_flag, parent_dept_no, search_code, 
+      level_no, company_id, manager_emp_id, 
+      worksite_id, order_no, creator, 
+      create_time, modifier, modify_time, 
+      remarks)
+    VALUES (#{deptNo,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{enableFlag,jdbcType=INTEGER}, #{parentDeptNo,jdbcType=INTEGER}, #{searchCode,jdbcType=VARCHAR}, 
+      #{levelNo,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, #{managerEmpId,jdbcType=INTEGER}, 
+      #{worksiteId,jdbcType=INTEGER}, #{orderNo,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    INSERT INTO itg_department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptNo != null" >
+        dept_no,
+      </if>
+      <if test="deptCode != null" >
+        dept_code,
+      </if>
+      <if test="deptName != null" >
+        dept_name,
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag,
+      </if>
+      <if test="parentDeptNo != null" >
+        parent_dept_no,
+      </if>
+      <if test="searchCode != null" >
+        search_code,
+      </if>
+      <if test="levelNo != null" >
+        level_no,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="managerEmpId != null" >
+        manager_emp_id,
+      </if>
+      <if test="worksiteId != null" >
+        worksite_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptNo != null" >
+        #{deptNo,jdbcType=INTEGER},
+      </if>
+      <if test="deptCode != null" >
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="parentDeptNo != null" >
+        #{parentDeptNo,jdbcType=INTEGER},
+      </if>
+      <if test="searchCode != null" >
+        #{searchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNo != null" >
+        #{levelNo,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="managerEmpId != null" >
+        #{managerEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="worksiteId != null" >
+        #{worksiteId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    UPDATE itg_department
+    <set >
+      <if test="deptCode != null" >
+        dept_code = #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="parentDeptNo != null" >
+        parent_dept_no = #{parentDeptNo,jdbcType=INTEGER},
+      </if>
+      <if test="searchCode != null" >
+        search_code = #{searchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="levelNo != null" >
+        level_no = #{levelNo,jdbcType=INTEGER},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="managerEmpId != null" >
+        manager_emp_id = #{managerEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="worksiteId != null" >
+        worksite_id = #{worksiteId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE dept_no = #{deptNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgDepartment" >
+    UPDATE itg_department
+    SET dept_code = #{deptCode,jdbcType=VARCHAR},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      parent_dept_no = #{parentDeptNo,jdbcType=INTEGER},
+      search_code = #{searchCode,jdbcType=VARCHAR},
+      level_no = #{levelNo,jdbcType=INTEGER},
+      company_id = #{companyId,jdbcType=INTEGER},
+      manager_emp_id = #{managerEmpId,jdbcType=INTEGER},
+      worksite_id = #{worksiteId,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    WHERE dept_no = #{deptNo,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectDeptbyParDeptNo" parameterType="int" resultMap="DepartmentTreeModel">
+  	select dept_no,dept_code,dept_name,parent_dept_no
+  	from itg_department
+  	where parent_dept_no = #{deptNo}
+  </select>
+  
+  <select id="selectDeptByParDeptNo2" parameterType="int" resultMap="DepartmentModel">
+  	select dept_no,dept_code,dept_name,parent_dept_no
+  	from itg_department
+  	where parent_dept_no = #{deptNo}
+  </select>
+</mapper>

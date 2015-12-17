@@ -1,0 +1,4 @@
+#Tue Dec 15 17:36:25 CST 2015
+eclipse.preferences.version=1
+validator.Checked=src/main/webapp/resources/static/js/extjs/ext-all-debug.js,src/main/webapp/resources/static/js/extjs/ext-all.js
+validator.Unchecked=

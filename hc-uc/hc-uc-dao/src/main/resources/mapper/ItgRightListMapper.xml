@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgRightListMapper" >
+  <resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgRightList" >
+    <id column="right_id" property="rightId" jdbcType="INTEGER" />
+    <result column="right_no" property="rightNo" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="right_name" property="rightName" jdbcType="VARCHAR" />
+    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
+    <result column="right_type" property="rightType" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    right_id, right_no, project_code, right_name, enable_flag, right_type, order_no, 
+    creator, create_time, modifier, modify_time, remarks
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="null!=params.queryCondition and ''!=params.queryCondition" >
+        ${params.queryCondition}
+      </if>
+      <if test="null!=params.rightId and ''!=params.rightId" >
+        and right_id= #{params.rightId}
+      </if>
+      <if test="null!=params.rightNo and ''!=params.rightNo" >
+        and right_no= #{params.rightNo}
+      </if>
+      <if test="null!=params.projectCode and ''!=params.projectCode" >
+        and project_code= #{params.projectCode}
+      </if>
+      <if test="null!=params.rightName and ''!=params.rightName" >
+        and right_name like concat('%',#{params.rightName},'%')
+      </if>
+      <if test="null!=params.enableFlag and ''!=params.enableFlag" >
+        and enable_flag= #{params.enableFlag}
+      </if>
+      <if test="null!=params.rightType and ''!=params.rightType" >
+        and right_type= #{params.rightType}
+      </if>
+      <if test="null!=params.orderNo and ''!=params.orderNo" >
+        and order_no= #{params.orderNo}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM itg_right_list
+    WHERE right_id = #{rightId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM itg_right_list WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM itg_right_list WHERE 1=1 
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      ORDER BY ${orderByField}
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM itg_right_list WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM itg_right_list
+    WHERE right_id = #{rightId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgRightList" >
+    DELETE FROM itg_right_list
+    WHERE right_id = #{rightId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgRightList" >
+    INSERT INTO itg_right_list (right_id, right_no, project_code, 
+      right_name, enable_flag, right_type, 
+      order_no, creator, create_time, 
+      modifier, modify_time, remarks
+      )
+    VALUES (#{rightId,jdbcType=INTEGER}, #{rightNo,jdbcType=INTEGER}, #{projectCode,jdbcType=VARCHAR}, 
+      #{rightName,jdbcType=VARCHAR}, #{enableFlag,jdbcType=INTEGER}, #{rightType,jdbcType=INTEGER}, 
+      #{orderNo,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgRightList" >
+    INSERT INTO itg_right_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <!-- <if test="rightId != null" >
+        right_id,
+      </if> -->
+      <if test="rightNo != null" >
+        right_no,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
+      </if>
+      <if test="rightName != null" >
+        right_name,
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag,
+      </if>
+      <if test="rightType != null" >
+        right_type,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <!-- <if test="rightId != null" >
+        #{rightId,jdbcType=INTEGER},
+      </if> -->
+      <if test="rightNo != null" >
+        #{rightNo,jdbcType=INTEGER},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rightName != null" >
+        #{rightName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rightType != null" >
+        #{rightType,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgRightList" >
+    UPDATE itg_right_list
+    <set >
+      <if test="rightNo != null" >
+        right_no = #{rightNo,jdbcType=INTEGER},
+      </if>
+      <if test="projectCode != null" >
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="rightName != null" >
+        right_name = #{rightName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rightType != null" >
+        right_type = #{rightType,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE right_id = #{rightId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgRightList" >
+    UPDATE itg_right_list
+    SET right_no = #{rightNo,jdbcType=INTEGER},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      right_name = #{rightName,jdbcType=VARCHAR},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      right_type = #{rightType,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    WHERE right_id = #{rightId,jdbcType=INTEGER}
+  </update>
+</mapper>

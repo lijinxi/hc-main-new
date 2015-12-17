@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgLoginUserMapper" >
+  <resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="pwd_level_no" property="pwdLevelNo" jdbcType="INTEGER" />
+    <result column="pwd_modify_time" property="pwdModifyTime" jdbcType="TIMESTAMP" />
+    <result column="dept_no" property="deptNo" jdbcType="INTEGER" />
+    <result column="is_admin_group" property="isAdminGroup" jdbcType="INTEGER" />
+    <result column="check_mac" property="checkMac" jdbcType="INTEGER" />
+    <result column="address_mac" property="addressMac" jdbcType="VARCHAR" />
+    <result column="check_ip" property="checkIp" jdbcType="INTEGER" />
+    <result column="address_ip" property="addressIp" jdbcType="VARCHAR" />
+    <result column="mobile_no" property="mobileNo" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_code, user_name, enable_flag, password, pwd_level_no, pwd_modify_time, 
+    dept_no, is_admin_group, check_mac, address_mac, check_ip, address_ip, mobile_no, 
+    email, creator, create_time, modifier, modify_time, remarks
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="null!=params.queryCondition and ''!=params.queryCondition" >
+        ${params.queryCondition}
+      </if>
+      <if test="null!=params.userCode and ''!=params.userCode" >
+        and user_code like concat('%',#{params.userCode},'%') 
+      </if>
+      <if test="null!=params.userName and ''!=params.userName" >
+        and user_name like concat('%',#{params.userName},'%')
+      </if>
+       <if test="null!=params.userId and ''!=params.userId" >
+        and user_id =#{params.userId}
+      </if>
+       <if test="null!=params.password and ''!=params.password" >
+        and password =#{params.password}
+      </if>
+      <if test="null!=params.enableFlag and ''!=params.enableFlag" >
+        and enable_flag = #{params.enableFlag}
+      </if>
+      <if test="null!=params.deptNo and ''!=params.deptNo" >
+        and dept_no = #{params.deptNo}
+      </if>
+      
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM itg_login_user
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM itg_login_user t WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+     FROM itg_login_user t WHERE 1=1 
+    <include refid="condition" />
+    <choose>
+    	<when test="orderByField != null and ''!=orderByField">
+    		order by ${orderByField}
+    		<if test="orderByField" >
+	        	${orderBy}
+	      	</if>
+    	</when>
+    	<otherwise>
+    		order by modify_time desc
+    	</otherwise>
+    </choose>
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,(select d.dept_name from itg_department d where d.dept_no =t.dept_no)dept_name
+     FROM itg_login_user t WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM itg_login_user
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    DELETE FROM itg_login_user
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    INSERT INTO itg_login_user (user_id, user_code, user_name, 
+      enable_flag, password, pwd_level_no, 
+      pwd_modify_time, dept_no, is_admin_group, 
+      check_mac, address_mac, check_ip, 
+      address_ip, mobile_no, email, 
+      creator, create_time, modifier, 
+      modify_time, remarks)
+    VALUES (#{userId,jdbcType=INTEGER}, #{userCode,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{enableFlag,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{pwdLevelNo,jdbcType=INTEGER}, 
+      #{pwdModifyTime,jdbcType=TIMESTAMP}, #{deptNo,jdbcType=INTEGER}, #{isAdminGroup,jdbcType=INTEGER}, 
+      #{checkMac,jdbcType=INTEGER}, #{addressMac,jdbcType=VARCHAR}, #{checkIp,jdbcType=INTEGER}, 
+      #{addressIp,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    INSERT INTO itg_login_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <!-- <if test="userId != null" >
+        user_id,
+      </if> -->
+      <if test="userCode != null" >
+        user_code,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="pwdLevelNo != null" >
+        pwd_level_no,
+      </if>
+      <if test="pwdModifyTime != null" >
+        pwd_modify_time,
+      </if>
+      <if test="deptNo != null" >
+        dept_no,
+      </if>
+      <if test="isAdminGroup != null" >
+        is_admin_group,
+      </if>
+      <if test="checkMac != null" >
+        check_mac,
+      </if>
+      <if test="addressMac != null" >
+        address_mac,
+      </if>
+      <if test="checkIp != null" >
+        check_ip,
+      </if>
+      <if test="addressIp != null" >
+        address_ip,
+      </if>
+      <if test="mobileNo != null" >
+        mobile_no,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifier != null" >
+        modifier,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <!-- <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if> -->
+      <if test="userCode != null" >
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdLevelNo != null" >
+        #{pwdLevelNo,jdbcType=INTEGER},
+      </if>
+      <if test="pwdModifyTime != null" >
+        #{pwdModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptNo != null" >
+        #{deptNo,jdbcType=INTEGER},
+      </if>
+      <if test="isAdminGroup != null" >
+        #{isAdminGroup,jdbcType=INTEGER},
+      </if>
+      <if test="checkMac != null" >
+        #{checkMac,jdbcType=INTEGER},
+      </if>
+      <if test="addressMac != null" >
+        #{addressMac,jdbcType=VARCHAR},
+      </if>
+      <if test="checkIp != null" >
+        #{checkIp,jdbcType=INTEGER},
+      </if>
+      <if test="addressIp != null" >
+        #{addressIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    UPDATE itg_login_user
+    <set >
+      <if test="userCode != null" >
+        user_code = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null" >
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdLevelNo != null" >
+        pwd_level_no = #{pwdLevelNo,jdbcType=INTEGER},
+      </if>
+      <if test="pwdModifyTime != null" >
+        pwd_modify_time = #{pwdModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deptNo != null" >
+        dept_no = #{deptNo,jdbcType=INTEGER},
+      </if>
+      <if test="isAdminGroup != null" >
+        is_admin_group = #{isAdminGroup,jdbcType=INTEGER},
+      </if>
+      <if test="checkMac != null" >
+        check_mac = #{checkMac,jdbcType=INTEGER},
+      </if>
+      <if test="addressMac != null" >
+        address_mac = #{addressMac,jdbcType=VARCHAR},
+      </if>
+      <if test="checkIp != null" >
+        check_ip = #{checkIp,jdbcType=INTEGER},
+      </if>
+      <if test="addressIp != null" >
+        address_ip = #{addressIp,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        mobile_no = #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgLoginUser" >
+    UPDATE itg_login_user
+    SET user_code = #{userCode,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      pwd_level_no = #{pwdLevelNo,jdbcType=INTEGER},
+      pwd_modify_time = #{pwdModifyTime,jdbcType=TIMESTAMP},
+      dept_no = #{deptNo,jdbcType=INTEGER},
+      is_admin_group = #{isAdminGroup,jdbcType=INTEGER},
+      check_mac = #{checkMac,jdbcType=INTEGER},
+      address_mac = #{addressMac,jdbcType=VARCHAR},
+      check_ip = #{checkIp,jdbcType=INTEGER},
+      address_ip = #{addressIp,jdbcType=VARCHAR},
+      mobile_no = #{mobileNo,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgCommonLogMapper" >
+  <resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    <id column="log_id" property="logId" jdbcType="INTEGER" />
+    <result column="log_time" property="logTime" jdbcType="TIMESTAMP" />
+    <result column="log_user" property="logUser" jdbcType="VARCHAR" />
+    <result column="log_model_type" property="logModelType" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hc.scm.uc.dao.entity.ItgCommonLog" extends="BaseResultMap" >
+    <result column="log_content" property="logContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    log_id, log_time, log_user, log_model_type
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="null!=params.queryCondition and ''!=params.queryCondition" >
+        ${params.queryCondition}
+      </if>
+      <if test="null!=params.logId and ''!=params.logId" >
+        and log_id= #{params.logId}
+      </if>
+      <if test="null!=params.logTime and ''!=params.logTime" >
+        and log_time= #{params.logTime}
+      </if>
+      <if test="null!=params.logUser and ''!=params.logUser" >
+        and log_user= #{params.logUser}
+      </if>
+      <if test="null!=params.logModelType and ''!=params.logModelType" >
+        and log_model_type= #{params.logModelType}
+      </if>
+      <if test="null!=params.logContent and ''!=params.logContent" >
+        and log_content like concat('%',#{params.logContent},'%')
+      </if>
+    </if>
+  </sql>
+  <sql id="Blob_Column_List" >
+    log_content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM itg_common_log
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    SELECT COUNT(1) as s FROM itg_common_log WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+     FROM itg_common_log WHERE 1=1 
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      ORDER BY ${orderByField}
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <select id="selectByParams" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+     FROM itg_common_log WHERE 1=1 
+    <include refid="condition" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM itg_common_log
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    DELETE FROM itg_common_log
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    INSERT INTO itg_common_log (log_id, log_time, log_user, 
+      log_model_type, log_content)
+    VALUES (#{logId,jdbcType=INTEGER}, #{logTime,jdbcType=TIMESTAMP}, #{logUser,jdbcType=VARCHAR}, 
+      #{logModelType,jdbcType=VARCHAR}, #{logContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    INSERT INTO itg_common_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        log_id,
+      </if>
+      <if test="logTime != null" >
+        log_time,
+      </if>
+      <if test="logUser != null" >
+        log_user,
+      </if>
+      <if test="logModelType != null" >
+        log_model_type,
+      </if>
+      <if test="logContent != null" >
+        log_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="logTime != null" >
+        #{logTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logUser != null" >
+        #{logUser,jdbcType=VARCHAR},
+      </if>
+      <if test="logModelType != null" >
+        #{logModelType,jdbcType=VARCHAR},
+      </if>
+      <if test="logContent != null" >
+        #{logContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    UPDATE itg_common_log
+    <set >
+      <if test="logTime != null" >
+        log_time = #{logTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logUser != null" >
+        log_user = #{logUser,jdbcType=VARCHAR},
+      </if>
+      <if test="logModelType != null" >
+        log_model_type = #{logModelType,jdbcType=VARCHAR},
+      </if>
+      <if test="logContent != null" >
+        log_content = #{logContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    UPDATE itg_common_log
+    SET log_time = #{logTime,jdbcType=TIMESTAMP},
+      log_user = #{logUser,jdbcType=VARCHAR},
+      log_model_type = #{logModelType,jdbcType=VARCHAR},
+      log_content = #{logContent,jdbcType=LONGVARCHAR}
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgCommonLog" >
+    UPDATE itg_common_log
+    SET log_time = #{logTime,jdbcType=TIMESTAMP},
+      log_user = #{logUser,jdbcType=VARCHAR},
+      log_model_type = #{logModelType,jdbcType=VARCHAR}
+    WHERE log_id = #{logId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.scm.uc.dao.mapper.ItgUserRoleMapper">
+	<resultMap id="BaseResultMap" type="com.hc.scm.uc.dao.entity.ItgUserRole">
+		<id column="user_role_id" property="userRoleId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap type="com.hc.scm.uc.dao.model.UserRoleModel"
+		id="userRoleModel" extends="BaseResultMap">
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+		<result column="enable_flag" property="enableFlag" jdbcType="INTEGER" />
+		<result column="role_owner" property="roleOwner" jdbcType="VARCHAR" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.hc.scm.uc.dao.model.LoginUserModel" id="loginUserModel">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+    	<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+   	 	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.hc.scm.uc.dao.model.DeptUserModel" id="deptUserModel">
+		<id column="dept_no" property="deptNo" jdbcType="INTEGER" />
+		<collection property="users" column="dept_no" resultMap="loginUserModel" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		user_role_id, user_id, role_id, creator, create_time
+	</sql>
+	<sql id="condition">
+		<if test="null!=params">
+			<if test="params.userId!=null and ''!=params.userId">
+				and user_id = #{params.userId}
+			</if>
+			<if test="params.roleId!=null and ''!=params.roleId">
+				and role_id = #{params.roleId}
+			</if>
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+		</if>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_user_role
+		WHERE user_role_id = #{userRoleId,jdbcType=INTEGER}
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT COUNT(1) as s FROM itg_user_role WHERE 1=1
+		<include refid="condition" />
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_user_role WHERE 1=1
+		<include refid="condition" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	<select id="selectByParams" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM itg_user_role WHERE 1=1
+		<include refid="condition" />
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		DELETE FROM
+		itg_user_role
+		WHERE user_role_id = #{userRoleId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByPrimarayKeyForModel" parameterType="com.hc.scm.uc.dao.entity.ItgUserRole">
+		DELETE
+		FROM itg_user_role
+		WHERE user_role_id = #{userRoleId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.hc.scm.uc.dao.entity.ItgUserRole">
+		INSERT INTO itg_user_role
+		(user_id, role_id,
+		creator, create_time)
+		VALUES
+		(#{userId,jdbcType=INTEGER},
+		#{roleId,jdbcType=INTEGER},
+		#{creator,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.hc.scm.uc.dao.entity.ItgUserRole">
+		INSERT INTO itg_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<!-- <if test="userRoleId != null">
+				user_role_id,
+			</if> -->
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<!-- <if test="userRoleId != null">
+				#{userRoleId,jdbcType=INTEGER},
+			</if> -->
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hc.scm.uc.dao.entity.ItgUserRole">
+		UPDATE itg_user_role
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE user_role_id = #{userRoleId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hc.scm.uc.dao.entity.ItgUserRole">
+		UPDATE
+		itg_user_role
+		SET user_id = #{userId,jdbcType=INTEGER},
+		role_id =
+		#{roleId,jdbcType=INTEGER},
+		creator = #{creator,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP}
+		WHERE user_role_id =
+		#{userRoleId,jdbcType=INTEGER}
+	</update>
+	
+	<sql id="condition2">
+		<if test="null!=params">
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+			<if test="null!=params.projectCode and ''!=params.projectCode">
+				and rl.project_code = #{params.projectCode}
+			</if>
+			<if test="null!=params.roleName and ''!=params.roleName">
+				and rl.role_name like concat('%',#{params.roleName},'%')
+			</if>
+			<if test="null!=params.roleOwner and ''!=params.roleOwner">
+				and rl.role_owner like concat('%',#{params.roleOwner},'%')
+			</if>
+			<if test="null!=params.enableFlag and ''!=params.enableFlag">
+				and rl.enable_flag = #{params.enableFlag}
+			</if>
+			<!-- <if test="null!=params.createFromTime and ''!=params.createFromTime">
+				<![CDATA[
+      			and  DATE_FORMAT(ur.create_time, '%Y-%m-%d') >=  DATE_FORMAT(#{params.createFromTime}, '%Y-%m-%d')
+				]]>
+			</if>
+			<if test="null!=params.createToTime and ''!=params.createToTime">
+				<![CDATA[
+      			and  DATE_FORMAT(ur.create_time, '%Y-%m-%d') <=  DATE_FORMAT(#{params.createToTime}, '%Y-%m-%d')
+				]]>
+			</if> -->
+		</if>
+	</sql>
+	
+	<sql id="condition3">
+		<if test="null!=params">
+			<if test="null!=params.queryCondition and ''!=params.queryCondition">
+				${params.queryCondition}
+			</if>
+			<if test="null!=params.projectCode and ''!=params.projectCode">
+				and project_code = #{params.projectCode}
+			</if>
+			<if test="null!=params.roleName and ''!=params.roleName">
+				and role_name like concat('%',#{params.roleName},'%')
+			</if>
+			<if test="null!=params.roleOwner and ''!=params.roleOwner">
+				and role_owner like concat('%',#{params.roleOwner},'%')
+			</if>
+			<if test="null!=params.enableFlag and ''!=params.enableFlag">
+				and enable_flag = #{params.enableFlag}
+			</if>
+			<!-- <if test="null!=params.createFromTime and ''!=params.createFromTime">
+				<![CDATA[
+      			and  DATE_FORMAT(create_time, '%Y-%m-%d') >=  DATE_FORMAT(#{params.createFromTime}, '%Y-%m-%d')
+				]]>
+			</if>
+			<if test="null!=params.createToTime and ''!=params.createToTime">
+				<![CDATA[
+      			and  DATE_FORMAT(create_time, '%Y-%m-%d') <=  DATE_FORMAT(#{params.createToTime}, '%Y-%m-%d')
+				]]>
+			</if> -->
+		</if>
+	</sql>
+	
+	
+	<select id="selectByPageForExistRole" parameterType="map" resultMap="userRoleModel">
+		select
+		ur.user_role_id user_role_id,
+		ur.user_id user_id,
+		ur.role_id role_id,
+		ur.creator creator,
+		ur.create_time create_time,
+		rl.role_name role_name,
+		rl.role_owner role_owner,
+		rl.project_code project_code,
+		rl.enable_flag enable_flag,
+		rl.remarks remarks
+		from itg_role_list rl
+		left join itg_user_role ur
+		on rl.role_id = ur.role_id
+		where ur.user_id = #{params.userId}
+		<include refid="condition2" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectByPageForNoExistRole" parameterType="map"
+		resultMap="userRoleModel">
+		select role_id,role_name,role_owner,project_code,enable_flag,creator,create_time,remarks
+		from itg_role_list
+		where role_id not in
+		(select
+		role_id from itg_user_role WHERE user_id =#{params.userId})
+		<include refid="condition3" />
+		<if test="orderByField != null and ''!=orderByField">
+			ORDER BY ${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectDeptUser" resultMap="deptUserModel">
+		select dept_no,user_id,user_code,user_name
+		FROM itg_login_user
+	</select>
+	
+	<select id="selectUserByParDeptNo" parameterType="int" resultMap="loginUserModel">
+		select user_id,user_code,user_name
+		FROM itg_login_user
+		where dept_no = #{deptNo}
+	</select>
+
+</mapper>
